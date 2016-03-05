@@ -1,0 +1,189 @@
+#    OpenAPI Specification for Fraport API
+#    Copyright (C) 2016  Alexey Valikov
+
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+swagger: '2.0'
+info:
+  version: "1"
+  title: Fraport API
+schemes:
+  - http
+host: developer.fraport.de
+basePath: /api
+consumes:
+  - application/x-www-form-urlencoded
+  - application/json
+securityDefinitions:
+  apiKey:
+    type: apiKey
+    in: header
+    name: Authorization
+paths:
+
+  /gates:
+    get:
+      security:
+        -
+          apiKey: []
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: NA
+          schema: 
+            $ref: '#/definitions/GatesResponse'      
+  /gates/{gatename}:
+    get:
+      security:
+        -
+          apiKey: []
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: gatename
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: NA
+          schema: 
+            $ref: '#/definitions/GatesResponse'      
+
+  /waitingperiod:
+    get:
+      security:
+        -
+          apiKey: []
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: NA
+          schema: 
+            $ref: '#/definitions/WaitingperiodResponse'      
+
+  /waitingperiod/{processsite}:
+    get:
+      security:
+        -
+          apiKey: []
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: processsite
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: NA
+          schema: 
+            $ref: '#/definitions/WaitingperiodResponse'      
+
+definitions:
+
+  GatesResponse:
+    type: array
+    items:
+      $ref: '#/definitions/GateResource'
+
+  GateResource:
+    type: object
+    required:
+      - Gate
+    properties:
+      Gate:
+        $ref: '#/definitions/Gate'
+
+  Gate:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+      terminal:
+        type: string
+      area:
+        type: string
+      departure_bordercheck:
+        type: string
+      departure_securitycheck:
+        type: string
+      arrival_bordercheck:
+        type: string
+      transit_bordercheck:
+        type: string
+      transit_securitycheck:
+        type: string
+
+  WaitingperiodResponse:
+    type: array
+    items:
+      $ref: '#/definitions/WaitingperiodResource'
+
+  WaitingperiodResource:
+    type: object
+    required:
+      - processSite
+    properties:
+      processSite:
+        $ref: '#/definitions/ProcessSite'
+
+  ProcessSite:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+      longitude:
+        type: number
+        format: double
+      latitude:
+        type: number
+        format: double
+      terminal:
+        type: string
+      area:
+        type: string
+      direction:
+        type: string
+      status:
+        type: string
+      waitingTime:
+        $ref: '#/definitions/WaitingTime'
+
+  WaitingTime:
+    type: object
+    properties:
+      currentWait:
+        type: integer
+        format: int32
+      germanText:
+        type: string
+      englishText:
+        type: string
